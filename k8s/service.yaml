@@ -1,0 +1,28 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: qwen-shared-inference
+  annotations:
+    # Use 2nd Gen execution environment for GPU support on Cloud Run
+    run.googleapis.com/execution-environment: gen2
+spec:
+  template:
+    metadata:
+      annotations:
+        # Scale to zero to eliminate costs when idle
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "1"
+    spec:
+      containerConcurrency: 1 # Prevent memory thrashing
+      containers:
+        - image: qwen-inference-server # Placeholder, Skaffold will rewrite this
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+              cpu: "8" # Mandatory for L4 support
+              memory: "32Gi" # Recommended for 7B-14B models
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MODEL_NAME
+              value: "Qwen/Qwen2.5-7B-Instruct"

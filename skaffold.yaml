@@ -1,0 +1,29 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+metadata:
+  name: qwen-gpu-inference
+build:
+  artifacts:
+    - image: us-central1-docker.pkg.dev/${GCP_PROJECT_ID}/inference-services/qwen-inference
+      docker:
+        dockerfile: Dockerfile
+profiles:
+  # Local profile: For logic testing on MicroK8s (no GPU required if mock-serving)
+  - name: local
+    deploy:
+      kubectl:
+        manifests:
+          - k8s/service.yaml
+    build:
+      local:
+        push: false
+
+  # Cloud profile: The primary deployment for L4 GPU usage
+  - name: cloud
+    manifests:
+      rawYaml:
+        - k8s/service.yaml
+    deploy:
+      cloudrun:
+        projectid: ${GCP_PROJECT_ID}
+        region: us-central1
