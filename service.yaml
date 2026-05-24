@@ -1,0 +1,127 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+    run.googleapis.com/client-name: gcloud
+    run.googleapis.com/client-version: 547.0.0
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+    run.googleapis.com/maxScale: '3'
+    run.googleapis.com/operation-id: c33447b7-2f16-4a37-8260-0f2e1fa6fee3
+    run.googleapis.com/urls: '["https://ce-llm-inference-110553119288.us-central1.run.app"]'
+    serving.knative.dev/creator: jmolmo@healthcentrix.com
+    serving.knative.dev/lastModifier: jmolmo@healthcentrix.com
+  creationTimestamp: '2026-05-20T20:57:55.959102Z'
+  generation: 1
+  labels:
+    cloud.googleapis.com/location: us-central1
+  name: ce-llm-inference
+  namespace: '110553119288'
+  resourceVersion: AAZSRg30FA4
+  selfLink: /apis/serving.knative.dev/v1/namespaces/110553119288/services/ce-llm-inference
+  uid: f4fcdbfc-2dc0-46e0-bc3e-5f03e6a8e34b
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: '1'
+        run.googleapis.com/client-name: gcloud
+        run.googleapis.com/client-version: 547.0.0
+        run.googleapis.com/cpu-throttling: 'false'
+        run.googleapis.com/execution-environment: gen2
+        run.googleapis.com/gpu-zonal-redundancy-disabled: 'true'
+        run.googleapis.com/startup-cpu-boost: 'true'
+      labels:
+        client.knative.dev/nonce: tltchaicqi
+        run.googleapis.com/startupProbeType: Default
+    spec:
+      containerConcurrency: 4
+      containers:
+      - args:
+        - -m
+        - /mnt/models/Qwen_Qwen3.6-27B-Q4_K_M.gguf
+        - --host
+        - 0.0.0.0
+        - --port
+        - '8080'
+        - -c
+        - '8192'
+        - -ngl
+        - '999'
+        - -fit
+        - 'off'
+        - --parallel
+        - '1'
+        - --flash-attn
+        - 'on'
+        - --threads
+        - '8'
+        - --cache-type-k
+        - q4_0
+        - --cache-type-v
+        - q4_0
+        - --no-mmap
+        - --mmproj
+        - /mnt/models/mmproj-Qwen_Qwen3.6-27B-f16.gguf
+        image: us-central1-docker.pkg.dev/prevvy1/inference-services/llama.cpp:server-l4-cuda12.6-latest
+        ports:
+        - containerPort: 8080
+          name: http1
+        resources:
+          limits:
+            cpu: '8'
+            memory: 32Gi
+            nvidia.com/gpu: '1'
+        startupProbe:
+          failureThreshold: 1
+          periodSeconds: 240
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 240
+        volumeMounts:
+        - mountPath: /mnt/models
+          name: model-volume
+      nodeSelector:
+        run.googleapis.com/accelerator: nvidia-l4
+      serviceAccountName: ce-llm-runner@prevvy1.iam.gserviceaccount.com
+      timeoutSeconds: 600
+      volumes:
+      - csi:
+          driver: gcsfuse.run.googleapis.com
+          volumeAttributes:
+            bucketName: prevvy1-llm-models
+        name: model-volume
+  traffic:
+  - latestRevision: true
+    percent: 100
+status:
+  conditions:
+  - lastTransitionTime: '2026-05-20T20:58:14.848853Z'
+    message: |-
+      The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable within the allocated timeout. This can happen when the container port is misconfigured or if the timeout is too short. The health check timeout can be extended. Logs for this revision might contain more information.
+
+      Logs URL: https://console.cloud.google.com/logs/viewer?project=prevvy1&resource=cloud_run_revision/service_name/ce-llm-inference/revision_name/ce-llm-inference-00001-bb5&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22ce-llm-inference%22%0Aresource.labels.revision_name%3D%22ce-llm-inference-00001-bb5%22 
+      For more troubleshooting guidance, see https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start
+    reason: HealthCheckContainerError
+    status: 'False'
+    type: Ready
+  - lastTransitionTime: '2026-05-20T20:58:14.769161Z'
+    message: |-
+      The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable within the allocated timeout. This can happen when the container port is misconfigured or if the timeout is too short. The health check timeout can be extended. Logs for this revision might contain more information.
+
+      Logs URL: https://console.cloud.google.com/logs/viewer?project=prevvy1&resource=cloud_run_revision/service_name/ce-llm-inference/revision_name/ce-llm-inference-00001-bb5&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22ce-llm-inference%22%0Aresource.labels.revision_name%3D%22ce-llm-inference-00001-bb5%22 
+      For more troubleshooting guidance, see https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start
+    reason: HealthCheckContainerError
+    status: 'False'
+    type: ConfigurationsReady
+  - lastTransitionTime: '2026-05-20T20:58:14.848853Z'
+    message: |-
+      The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable within the allocated timeout. This can happen when the container port is misconfigured or if the timeout is too short. The health check timeout can be extended. Logs for this revision might contain more information.
+
+      Logs URL: https://console.cloud.google.com/logs/viewer?project=prevvy1&resource=cloud_run_revision/service_name/ce-llm-inference/revision_name/ce-llm-inference-00001-bb5&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22ce-llm-inference%22%0Aresource.labels.revision_name%3D%22ce-llm-inference-00001-bb5%22 
+      For more troubleshooting guidance, see https://cloud.google.com/run/docs/troubleshooting#container-failed-to-start
+    reason: HealthCheckContainerError
+    status: 'False'
+    type: RoutesReady
+  latestCreatedRevisionName: ce-llm-inference-00001-bb5
+  observedGeneration: 1

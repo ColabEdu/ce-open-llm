@@ -1,0 +1,56 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: ce-llm-inference
+  annotations:
+    run.googleapis.com/ingress: "internal" # Only allow internal traffic (or IAM)
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/execution-environment: "gen2"
+        run.googleapis.com/gpu-zonal-redundancy-disabled: "true"
+        run.googleapis.com/cpu-throttling: "false"
+        run.googleapis.com/startup-cpu-boost: "true"
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "1"
+    spec:
+      containerConcurrency: 4
+      timeoutSeconds: 600
+      serviceAccountName: "ce-llm-runner@prevvy1.iam.gserviceaccount.com"
+      containers:
+        - image: us-central1-docker.pkg.dev/prevvy1/inference-services/llama.cpp:server-l4-cuda12.6
+          args:
+            - "-m"
+            - "/mnt/models/qwen2.5-0.5b-instruct-q4_k_m.gguf"
+            - "--host"
+            - "0.0.0.0"
+            - "--port"
+            - "8080"
+            - "-ngl"
+            - "99"
+            - "-c"
+            - "65536"
+            - "--cache-type-k"
+            - "q8_0"
+            - "--cache-type-v"
+            - "q8_0"
+            - "-fa"
+            - "on"
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+              cpu: "8"
+              memory: "32Gi"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: model-volume
+              mountPath: /mnt/models
+      volumes:
+        - name: model-volume
+          csi:
+            driver: gcsfuse.run.googleapis.com
+            readOnly: true
+            volumeAttributes:
+              bucketName: prevvy1-llm-models

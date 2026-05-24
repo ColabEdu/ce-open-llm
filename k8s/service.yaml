@@ -1,28 +1,29 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: qwen-shared-inference
+  name: colabedu-inference-server
   annotations:
-    # Use 2nd Gen execution environment for GPU support on Cloud Run
     run.googleapis.com/execution-environment: gen2
 spec:
   template:
     metadata:
       annotations:
-        # Scale to zero to eliminate costs when idle
+        run.googleapis.com/cpu-throttling: "false"
+        run.googleapis.com/startup-cpu-boost: "true"
         autoscaling.knative.dev/minScale: "0"
         autoscaling.knative.dev/maxScale: "1"
     spec:
-      containerConcurrency: 1 # Prevent memory thrashing
+      containerConcurrency: 4
+      timeoutSeconds: 600
       containers:
-        - image: qwen-inference-server # Placeholder, Skaffold will rewrite this
+        - image: llm-server
           resources:
             limits:
               nvidia.com/gpu: "1"
-              cpu: "8" # Mandatory for L4 support
-              memory: "32Gi" # Recommended for 7B-14B models
-          ports:
-            - containerPort: 8080
+              cpu: "8"
+              memory: "32Gi"
           env:
             - name: MODEL_NAME
-              value: "Qwen/Qwen2.5-7B-Instruct"
+              value: "BSC-LT/salamandra-7b-instruct"
+          ports:
+            - containerPort: 8080
