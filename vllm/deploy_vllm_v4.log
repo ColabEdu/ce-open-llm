@@ -1,0 +1,125 @@
+☁️ Building vLLM Docker image...
+----------------------------- REMOTE BUILD OUTPUT ------------------------------
+starting build "83393782-4fcc-462c-9383-f7930cd7c395"
+
+FETCHSOURCE
+Fetching storage object: gs://prevvy1_cloudbuild/source/1780363617.198414-a3d5567920834f3281c735851c100495.tgz#1780363617685499
+Copying gs://prevvy1_cloudbuild/source/1780363617.198414-a3d5567920834f3281c735851c100495.tgz#1780363617685499...
+/ [0 files][    0.0 B/  6.6 KiB]                                                / [1 files][  6.6 KiB/  6.6 KiB]                                                
+Operation completed over 1 objects/6.6 KiB.
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/gcb-internal
+Sending build context to Docker daemon  35.84kB
+Step 1/5 : FROM vllm/vllm-openai:v0.6.0
+v0.6.0: Pulling from vllm/vllm-openai
+43cfb69dbb46: Pulling fs layer
+fbcd35dc5bc3: Pulling fs layer
+c7232af9ae05: Pulling fs layer
+db6cdef1932a: Pulling fs layer
+56dc85502937: Pulling fs layer
+9f61b3db38d6: Pulling fs layer
+0bd39d0469a8: Pulling fs layer
+d22ff5f4aac6: Pulling fs layer
+d866993704f5: Pulling fs layer
+b4918d864665: Pulling fs layer
+e93cc01aab8b: Pulling fs layer
+fd30840e514d: Pulling fs layer
+0bd39d0469a8: Waiting
+d22ff5f4aac6: Waiting
+d866993704f5: Waiting
+b4918d864665: Waiting
+e93cc01aab8b: Waiting
+fd30840e514d: Waiting
+9f61b3db38d6: Verifying Checksum
+9f61b3db38d6: Download complete
+56dc85502937: Download complete
+db6cdef1932a: Verifying Checksum
+db6cdef1932a: Download complete
+fbcd35dc5bc3: Verifying Checksum
+fbcd35dc5bc3: Download complete
+0bd39d0469a8: Verifying Checksum
+0bd39d0469a8: Download complete
+d866993704f5: Download complete
+43cfb69dbb46: Verifying Checksum
+43cfb69dbb46: Download complete
+c7232af9ae05: Verifying Checksum
+c7232af9ae05: Download complete
+fd30840e514d: Verifying Checksum
+fd30840e514d: Download complete
+d22ff5f4aac6: Verifying Checksum
+d22ff5f4aac6: Download complete
+43cfb69dbb46: Pull complete
+fbcd35dc5bc3: Pull complete
+c7232af9ae05: Pull complete
+db6cdef1932a: Pull complete
+56dc85502937: Pull complete
+9f61b3db38d6: Pull complete
+0bd39d0469a8: Pull complete
+e93cc01aab8b: Verifying Checksum
+e93cc01aab8b: Download complete
+d22ff5f4aac6: Pull complete
+d866993704f5: Pull complete
+b4918d864665: Verifying Checksum
+b4918d864665: Download complete
+b4918d864665: Pull complete
+e93cc01aab8b: Pull complete
+fd30840e514d: Pull complete
+Digest: sha256:072427aa6f95c74782a9bc3fe1d1fcd1e1aa3fe47b317584ea2181c549ad2de8
+Status: Downloaded newer image for vllm/vllm-openai:v0.6.0
+ ---> 714424fc682c
+Step 2/5 : ENV VLLM_PORT=8000
+ ---> Running in 19584ab69c6d
+Removing intermediate container 19584ab69c6d
+ ---> 5a7c1789055e
+Step 3/5 : ENV HOST=0.0.0.0
+ ---> Running in ac52bfdab915
+Removing intermediate container ac52bfdab915
+ ---> b30f5b3db96f
+Step 4/5 : ENV PYTHONUNBUFFERED=1
+ ---> Running in 663d018b69f0
+Removing intermediate container 663d018b69f0
+ ---> 02b2e86f4e7b
+Step 5/5 : EXPOSE 8000
+ ---> Running in 8850e1de8114
+Removing intermediate container 8850e1de8114
+ ---> 20cb67007226
+Successfully built 20cb67007226
+Successfully tagged us-central1-docker.pkg.dev/prevvy1/inference-services/vllm:latest
+PUSH
+Pushing us-central1-docker.pkg.dev/prevvy1/inference-services/vllm:latest
+The push refers to repository [us-central1-docker.pkg.dev/prevvy1/inference-services/vllm]
+5d2b4a0ead90: Preparing
+220ab014ee96: Preparing
+3f3eb8c7c911: Preparing
+3d42f132c006: Preparing
+6e44a86d7e24: Preparing
+2c1ed2c1da96: Preparing
+f64d335e5a99: Preparing
+809d3bb9c80f: Preparing
+5136ffc45974: Preparing
+2ecbf7829cb7: Preparing
+cd76869b72ab: Preparing
+106e8431b412: Preparing
+cd76869b72ab: Waiting
+106e8431b412: Waiting
+809d3bb9c80f: Layer already exists
+f64d335e5a99: Pushed
+5136ffc45974: Pushed
+2c1ed2c1da96: Pushed
+3d42f132c006: Pushed
+cd76869b72ab: Pushed
+2ecbf7829cb7: Pushed
+106e8431b412: Pushed
+5d2b4a0ead90: Pushed
+220ab014ee96: Pushed
+6e44a86d7e24: Pushed
+3f3eb8c7c911: Pushed
+latest: digest: sha256:f78654df658c201ae7eb2393e40520201325057734b2c1b7edb1b44dcdb3f930 size: 2843
+DONE
+--------------------------------------------------------------------------------
+ID                                    CREATE_TIME                DURATION  SOURCE                                                                                 IMAGES                                                                STATUS
+83393782-4fcc-462c-9383-f7930cd7c395  2026-06-02T01:26:57+00:00  10M38S    gs://prevvy1_cloudbuild/source/1780363617.198414-a3d5567920834f3281c735851c100495.tgz  us-central1-docker.pkg.dev/prevvy1/inference-services/vllm (+1 more)  SUCCESS
+☁️ Desplegando servidor vLLM en Cloud Run (vía conectores GCS FUSE)...
+Modelo apuntado: gs://prevvy1-llm-models/Qwen2.5-14B-Instruct-AWQ
+🎉 ¡Completado! El servidor vLLM (OpenAI-compatible) ya está en línea (Privado) y lee en tiempo real desde Cloud Storage.
+IMPORTANTE: Asegúrate de que la carpeta gs://prevvy1-llm-models/Qwen2.5-14B-Instruct-AWQ existe y contiene los archivos del modelo (config.json, safetensors, etc).

@@ -1,0 +1,63 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: ce-llm-inference
+  annotations:
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/execution-environment: gen2
+        autoscaling.knative.dev/maxScale: '1'
+        run.googleapis.com/cpu-boost: 'true'
+        run.googleapis.com/gpu-zonal-redundancy: 'false'
+    spec:
+      containerConcurrency: 10
+      timeoutSeconds: 600
+      serviceAccountName: ce-llm-runner@prevvy1.iam.gserviceaccount.com
+      volumes:
+        - name: model-volume
+          csi:
+            driver: gcsfuse.run.googleapis.com
+            readOnly: true
+            volumeAttributes:
+              bucketName: prevvy1-llm-models
+      containers:
+        - image: us-central1-docker.pkg.dev/prevvy1/inference-services/vllm:latest
+          args:
+            - "--model"
+            - "/mnt/models/Qwen2.5-14B-Instruct-AWQ"
+            - "--quantization"
+            - "awq"
+            - "--max-model-len"
+            - "8192"
+            - "--gpu-memory-utilization"
+            - "0.95"
+            - "--enforce-eager"
+            - "--disable-frontend-multiprocessing"
+            - "--port"
+            - "8000"
+          ports:
+            - name: http1
+              containerPort: 8000
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+            periodSeconds: 10
+            failureThreshold: 60
+          resources:
+            limits:
+              cpu: '8'
+              memory: 32Gi
+              nvidia.com/gpu: '1'
+          volumeMounts:
+            - name: model-volume
+              mountPath: /mnt/models
+              readOnly: true
+      nodeSelector:
+        run.googleapis.com/accelerator: nvidia-l4

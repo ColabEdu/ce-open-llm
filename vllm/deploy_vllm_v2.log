@@ -1,0 +1,268 @@
+☁️ Building vLLM Docker image...
+----------------------------- REMOTE BUILD OUTPUT ------------------------------
+starting build "59005031-4693-49e8-b469-c429b5afcdf1"
+
+FETCHSOURCE
+Fetching storage object: gs://prevvy1_cloudbuild/source/1780342377.668306-631e3c64282d4512b9ebd0f6bd1ccf3d.tgz#1780342378156785
+Copying gs://prevvy1_cloudbuild/source/1780342377.668306-631e3c64282d4512b9ebd0f6bd1ccf3d.tgz#1780342378156785...
+/ [0 files][    0.0 B/  4.1 KiB]                                                / [1 files][  4.1 KiB/  4.1 KiB]                                                
+Operation completed over 1 objects/4.1 KiB.
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/gcb-internal
+Sending build context to Docker daemon   16.9kB
+Step 1/5 : FROM vllm/vllm-openai:latest
+latest: Pulling from vllm/vllm-openai
+828c1365039a: Pulling fs layer
+2cf9fba20a14: Pulling fs layer
+0e0a2c237a99: Pulling fs layer
+31e49ca9b3e8: Pulling fs layer
+526d5438c009: Pulling fs layer
+58923d5d4333: Pulling fs layer
+ab8ff853f955: Pulling fs layer
+bf62d062e446: Pulling fs layer
+1cfdea31c2cd: Pulling fs layer
+dc46d64ef685: Pulling fs layer
+7c1f82f462a3: Pulling fs layer
+528c2b3c167d: Pulling fs layer
+cdcee1f2051c: Pulling fs layer
+2fdc77e061f3: Pulling fs layer
+ae9b37c48976: Pulling fs layer
+6d432f49363e: Pulling fs layer
+a63ff542e4b2: Pulling fs layer
+d7e336d5d44d: Pulling fs layer
+c00263573d36: Pulling fs layer
+74eb1dd99836: Pulling fs layer
+4b1f3e47eb53: Pulling fs layer
+1c8b641e8e2b: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+e17f07c7aec1: Pulling fs layer
+9f5d45f564f9: Pulling fs layer
+db4570bd46a0: Pulling fs layer
+91306c801afb: Pulling fs layer
+f92c55c9a464: Pulling fs layer
+52ec538d42a6: Pulling fs layer
+34242d39dc08: Pulling fs layer
+ae9b37c48976: Waiting
+6d432f49363e: Waiting
+a63ff542e4b2: Waiting
+d7e336d5d44d: Waiting
+c00263573d36: Waiting
+74eb1dd99836: Waiting
+4b1f3e47eb53: Waiting
+1c8b641e8e2b: Waiting
+4f4fb700ef54: Waiting
+e17f07c7aec1: Waiting
+9f5d45f564f9: Waiting
+db4570bd46a0: Waiting
+91306c801afb: Waiting
+f92c55c9a464: Waiting
+52ec538d42a6: Waiting
+34242d39dc08: Waiting
+ab8ff853f955: Waiting
+bf62d062e446: Waiting
+1cfdea31c2cd: Waiting
+dc46d64ef685: Waiting
+7c1f82f462a3: Waiting
+528c2b3c167d: Waiting
+cdcee1f2051c: Waiting
+2fdc77e061f3: Waiting
+31e49ca9b3e8: Verifying Checksum
+31e49ca9b3e8: Download complete
+526d5438c009: Verifying Checksum
+526d5438c009: Download complete
+58923d5d4333: Verifying Checksum
+58923d5d4333: Download complete
+2cf9fba20a14: Verifying Checksum
+2cf9fba20a14: Download complete
+828c1365039a: Verifying Checksum
+828c1365039a: Download complete
+ab8ff853f955: Verifying Checksum
+ab8ff853f955: Download complete
+7c1f82f462a3: Download complete
+528c2b3c167d: Verifying Checksum
+528c2b3c167d: Download complete
+cdcee1f2051c: Verifying Checksum
+cdcee1f2051c: Download complete
+2fdc77e061f3: Verifying Checksum
+2fdc77e061f3: Download complete
+dc46d64ef685: Verifying Checksum
+dc46d64ef685: Download complete
+0e0a2c237a99: Download complete
+ae9b37c48976: Verifying Checksum
+ae9b37c48976: Download complete
+d7e336d5d44d: Verifying Checksum
+d7e336d5d44d: Download complete
+c00263573d36: Verifying Checksum
+c00263573d36: Download complete
+4b1f3e47eb53: Verifying Checksum
+4b1f3e47eb53: Download complete
+bf62d062e446: Verifying Checksum
+bf62d062e446: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+74eb1dd99836: Verifying Checksum
+74eb1dd99836: Download complete
+e17f07c7aec1: Verifying Checksum
+e17f07c7aec1: Download complete
+db4570bd46a0: Verifying Checksum
+db4570bd46a0: Download complete
+91306c801afb: Verifying Checksum
+91306c801afb: Download complete
+f92c55c9a464: Verifying Checksum
+f92c55c9a464: Download complete
+1c8b641e8e2b: Verifying Checksum
+1c8b641e8e2b: Download complete
+52ec538d42a6: Verifying Checksum
+52ec538d42a6: Download complete
+9f5d45f564f9: Verifying Checksum
+9f5d45f564f9: Download complete
+828c1365039a: Pull complete
+2cf9fba20a14: Pull complete
+34242d39dc08: Verifying Checksum
+34242d39dc08: Download complete
+1cfdea31c2cd: Verifying Checksum
+1cfdea31c2cd: Download complete
+a63ff542e4b2: Verifying Checksum
+a63ff542e4b2: Download complete
+0e0a2c237a99: Pull complete
+31e49ca9b3e8: Pull complete
+526d5438c009: Pull complete
+58923d5d4333: Pull complete
+ab8ff853f955: Pull complete
+bf62d062e446: Pull complete
+6d432f49363e: Verifying Checksum
+6d432f49363e: Download complete
+1cfdea31c2cd: Pull complete
+dc46d64ef685: Pull complete
+7c1f82f462a3: Pull complete
+528c2b3c167d: Pull complete
+cdcee1f2051c: Pull complete
+2fdc77e061f3: Pull complete
+ae9b37c48976: Pull complete
+6d432f49363e: Pull complete
+a63ff542e4b2: Pull complete
+d7e336d5d44d: Pull complete
+c00263573d36: Pull complete
+74eb1dd99836: Pull complete
+4b1f3e47eb53: Pull complete
+1c8b641e8e2b: Pull complete
+4f4fb700ef54: Pull complete
+e17f07c7aec1: Pull complete
+9f5d45f564f9: Pull complete
+db4570bd46a0: Pull complete
+91306c801afb: Pull complete
+f92c55c9a464: Pull complete
+52ec538d42a6: Pull complete
+34242d39dc08: Pull complete
+Digest: sha256:0fec7ec5f3e6bc168e54899935fb0557da908a4832a1dbc88e2debcf2f889416
+Status: Downloaded newer image for vllm/vllm-openai:latest
+ ---> 6b1c0c57fe1a
+Step 2/5 : ENV VLLM_PORT=8000
+ ---> Running in 71169333a134
+Removing intermediate container 71169333a134
+ ---> 32c35c166e60
+Step 3/5 : ENV HOST=0.0.0.0
+ ---> Running in cd30977a7a40
+Removing intermediate container cd30977a7a40
+ ---> b48418adc613
+Step 4/5 : ENV PYTHONUNBUFFERED=1
+ ---> Running in 41fd28877a4f
+Removing intermediate container 41fd28877a4f
+ ---> 16656c93c9d5
+Step 5/5 : EXPOSE 8000
+ ---> Running in 84ff4c16cb50
+Removing intermediate container 84ff4c16cb50
+ ---> 89a63074aeb0
+Successfully built 89a63074aeb0
+Successfully tagged us-central1-docker.pkg.dev/prevvy1/inference-services/vllm:latest
+PUSH
+Pushing us-central1-docker.pkg.dev/prevvy1/inference-services/vllm:latest
+The push refers to repository [us-central1-docker.pkg.dev/prevvy1/inference-services/vllm]
+9179457a015c: Preparing
+5b1b1c6c7c3e: Preparing
+c7dd37a8fc2f: Preparing
+7221e8784480: Preparing
+4a9612348b37: Preparing
+00dcdb14028c: Preparing
+7cc890463976: Preparing
+5f70bf18a086: Preparing
+c90b86f71cbd: Preparing
+70eba7ba1297: Preparing
+dd2973782c98: Preparing
+b8e78c7fa430: Preparing
+636cd8eee096: Preparing
+48513dce1149: Preparing
+1dd613fbadf9: Preparing
+ab3dea8d2938: Preparing
+f7000e09f675: Preparing
+4799da32c8b4: Preparing
+4799da32c8b4: Preparing
+b8fc835835f8: Preparing
+01b877d0feee: Preparing
+d3d9379a4138: Preparing
+6762eb7f624f: Preparing
+51dbd6236417: Preparing
+9947a05ac477: Preparing
+9f3b15bc8210: Preparing
+b7ec8fd7c485: Preparing
+50a43a035274: Preparing
+0f09a2d797f7: Preparing
+a34bd8b26cb2: Preparing
+767e56ba346a: Preparing
+01b877d0feee: Waiting
+d3d9379a4138: Waiting
+6762eb7f624f: Waiting
+51dbd6236417: Waiting
+9947a05ac477: Waiting
+9f3b15bc8210: Waiting
+b7ec8fd7c485: Waiting
+50a43a035274: Waiting
+0f09a2d797f7: Waiting
+a34bd8b26cb2: Waiting
+767e56ba346a: Waiting
+dd2973782c98: Waiting
+b8e78c7fa430: Waiting
+636cd8eee096: Waiting
+48513dce1149: Waiting
+1dd613fbadf9: Waiting
+f7000e09f675: Waiting
+ab3dea8d2938: Waiting
+4799da32c8b4: Waiting
+b8fc835835f8: Waiting
+5f70bf18a086: Layer already exists
+7221e8784480: Pushed
+70eba7ba1297: Pushed
+c7dd37a8fc2f: Pushed
+4a9612348b37: Pushed
+b8e78c7fa430: Pushed
+636cd8eee096: Pushed
+7cc890463976: Pushed
+f7000e09f675: Pushed
+ab3dea8d2938: Pushed
+4799da32c8b4: Pushed
+01b877d0feee: Pushed
+b8fc835835f8: Pushed
+d3d9379a4138: Pushed
+9947a05ac477: Pushed
+9f3b15bc8210: Pushed
+b7ec8fd7c485: Pushed
+50a43a035274: Pushed
+0f09a2d797f7: Pushed
+a34bd8b26cb2: Pushed
+dd2973782c98: Pushed
+767e56ba346a: Pushed
+5b1b1c6c7c3e: Pushed
+c90b86f71cbd: Pushed
+9179457a015c: Pushed
+00dcdb14028c: Pushed
+51dbd6236417: Pushed
+6762eb7f624f: Pushed
+48513dce1149: Pushed
+1dd613fbadf9: Pushed
+latest: digest: sha256:b39c23c305246a8ff60615f6bf76412216329609de669cf53895d218d3a2457e size: 6831
+DONE
+--------------------------------------------------------------------------------
+ID                                    CREATE_TIME                DURATION  SOURCE                                                                                 IMAGES                                                                STATUS
+59005031-4693-49e8-b469-c429b5afcdf1  2026-06-01T19:32:58+00:00  24M17S    gs://prevvy1_cloudbuild/source/1780342377.668306-631e3c64282d4512b9ebd0f6bd1ccf3d.tgz  us-central1-docker.pkg.dev/prevvy1/inference-services/vllm (+1 more)  SUCCESS
+☁️ Desplegando servidor vLLM en Cloud Run (vía conectores GCS FUSE)...
+Modelo apuntado: gs://prevvy1-llm-models/Qwen2.5-14B-Instruct-AWQ
