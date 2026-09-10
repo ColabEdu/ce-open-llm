@@ -1,0 +1,55 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: ce-alia-inference
+  annotations:
+    run.googleapis.com/ingress: "internal"
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/execution-environment: "gen2"
+        run.googleapis.com/gpu-zonal-redundancy-disabled: "true"
+        run.googleapis.com/cpu-throttling: "false"
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "1"
+    spec:
+      containerConcurrency: 10
+      timeoutSeconds: 600
+      serviceAccountName: "ce-llm-runner@prevvy1.iam.gserviceaccount.com"
+      containers:
+        - image: vllm/vllm-openai:latest
+          args:
+            - "--model"
+            - "/mnt/models/ALIA-40b-instruct-2606.Q4_K_M.gguf"
+            - "--tokenizer"
+            - "BSC-LT/ALIA-40b-instruct-2606"
+            - "--max-model-len"
+            - "32768"
+            - "--gpu-memory-utilization"
+            - "0.90"
+            - "--port"
+            - "8080"
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+              cpu: "8"
+              memory: "32Gi"
+          ports:
+            - containerPort: 8080
+          startupProbe:
+            timeoutSeconds: 240
+            periodSeconds: 240
+            failureThreshold: 5
+            tcpSocket:
+              port: 8080
+          volumeMounts:
+            - name: model-volume
+              mountPath: /mnt/models
+      volumes:
+        - name: model-volume
+          csi:
+            driver: gcsfuse.run.googleapis.com
+            readOnly: true
+            volumeAttributes:
+              bucketName: prevvy1-llm-models

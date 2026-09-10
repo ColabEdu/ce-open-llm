@@ -24,3 +24,55 @@ profiles:
         push: false
     manifests:
       rawYaml: ["k8s/service-local.yaml"]
+
+  # --- CLOUD PROFILE (vLLM + Qwen 3 AWQ) ---
+  - name: cloud-qwen3-vllm
+    build:
+      local:
+        push: false
+      artifacts: []
+    manifests:
+      rawYaml: ["k8s/service-cloud-vllm-qwen3.yaml"]
+    deploy:
+      cloudrun:
+        projectid: prevvy1
+        region: us-central1
+
+  # --- LOCAL PROFILE (llama.cpp + Qwen 3 GGUF) ---
+  - name: local-qwen3-llamacpp
+    build:
+      local:
+        push: false
+    manifests:
+      rawYaml: ["k8s/service-local-llamacpp-qwen3.yaml"]
+
+  # --- CLOUD PROFILE (vLLM + ALIA GGUF) ---
+  - name: cloud-alia-vllm
+    build:
+      local:
+        push: false
+      artifacts: []
+    manifests:
+      rawYaml: ["k8s/service-cloud-vllm-alia.yaml"]
+    deploy:
+      cloudrun:
+        projectid: prevvy1
+        region: us-central1
+
+  # --- LOCAL PROFILE (llama.cpp + ALIA GGUF) ---
+  - name: local-alia-llamacpp
+    build:
+      local:
+        push: false
+    manifests:
+      rawYaml: ["k8s/service-local-llamacpp-alia.yaml"]
+
+  # --- RUNPOD SERVERLESS PROFILE (vLLM + ALIA 40B) ---
+  - name: cloud-alia-runpod
+    build:
+      artifacts: [] # RunPod uses pre-built vLLM image
+    manifests:
+      rawYaml: []
+    deploy:
+      custom:
+        - command: ../ce-devops/scripts/deploy_runpod_alia.sh

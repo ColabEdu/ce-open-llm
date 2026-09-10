@@ -1,0 +1,52 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: ce-alia-inference-local
+  annotations:
+    run.googleapis.com/execution-environment: gen2
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/cpu-throttling: "false"
+        run.googleapis.com/startup-cpu-boost: "true"
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "1"
+    spec:
+      containerConcurrency: 4
+      timeoutSeconds: 600
+      containers:
+        - image: ghcr.io/ggerganov/llama.cpp:server-cuda
+          args:
+            - "-m"
+            - "/mnt/models/ALIA-40b-instruct-2606.Q4_K_M.gguf"
+            - "--host"
+            - "0.0.0.0"
+            - "--port"
+            - "8080"
+            - "--api-key"
+            - "colabedu-local-secret"
+            - "-ngl"
+            - "99"
+            - "-c"
+            - "32768"
+            - "--cache-type-k"
+            - "q8_0"
+            - "--cache-type-v"
+            - "q8_0"
+            - "--flash-attn"
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+              cpu: "8"
+              memory: "32Gi"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: model-volume
+              mountPath: /mnt/models
+      volumes:
+        - name: model-volume
+          hostPath:
+            path: /home/jmolmo/git/colabedu/ce-open-llm/models
+            type: DirectoryOrCreate

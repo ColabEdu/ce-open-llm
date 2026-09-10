@@ -16,10 +16,15 @@ El ecosistema está compuesto por tres capas principales de procesamiento:
 
 El despliegue está unificado gracias a **Skaffold** y **Knative**.
 
-Se utiliza el mismo `Dockerfile` base (`ghcr.io/ggerganov/llama.cpp:server-cuda`). Las diferencias de entorno se manejan a nivel de *Profiles* en Skaffold:
+Se manejan diferentes motores y formatos según los perfiles definidos en Skaffold para dar soporte tanto a la generación Qwen 2.5 como a la nueva generación Qwen 3 (MoE):
 
-*   **Perfil `local-open-llm`:** Usa el archivo `k8s/service-local.yaml`. Despliega el modelo apuntando a discos locales NVMe donde residen los pesos GGUF (Qwen 3.6-27B).
-*   **Perfil `cloud-open-llm`:** Usa el archivo `k8s/service-cloud.yaml`. Despliega el modelo en Cloud Run, descargando los pesos desde Google Cloud Storage o construyendo la imagen dinámicamente.
+### Perfiles de la Familia Qwen 3 (Mezcla de Expertos)
+*   **Perfil `cloud-qwen3-vllm`:** Usa el archivo `k8s/service-cloud-vllm-qwen3.yaml`. Despliega **vLLM** en Knative de producción cargando el modelo AWQ (`Qwen3-30B-A3B-Instruct-AWQ`) con un contexto nativo de 32k. Este enfoque evita los tiempos de espera y fallos de arranque de GCS Fuse al fragmentar la carga en múltiples archivos pequeños `.safetensors`.
+*   **Perfil `local-qwen3-llamacpp`:** Usa el archivo `k8s/service-local-llamacpp-qwen3.yaml`. Despliega **llama.cpp** en el clúster MicroK8s de desarrollo local, montando el volumen local NVMe para cargar el modelo MoE en formato GGUF junto con el proyector multimodal (`--mmproj`) de audio y visión.
+
+### Perfiles de la Familia Qwen 2.5 (Heredados)
+*   **Perfil `local-open-llm`:** Usa el archivo `k8s/service-local.yaml`. Despliega el motor llama.cpp apuntando a discos locales NVMe donde residen los pesos GGUF heredados de Qwen 2.5.
+*   **Perfil `cloud-open-llm`:** Usa el archivo `k8s/service-cloud.yaml`. Despliega llama.cpp en Cloud Run, montando los pesos GGUF mediante GCS FUSE.
 
 ## 3. Matriz de Autenticación Híbrida
 
