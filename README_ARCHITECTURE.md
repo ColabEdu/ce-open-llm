@@ -22,9 +22,13 @@ Se manejan diferentes motores y formatos según los perfiles definidos en Skaffo
 *   **Perfil `cloud-qwen3-vllm`:** Usa el archivo `k8s/service-cloud-vllm-qwen3.yaml`. Despliega **vLLM** en Knative de producción cargando el modelo AWQ (`Qwen3-30B-A3B-Instruct-AWQ`) con un contexto nativo de 32k. Este enfoque evita los tiempos de espera y fallos de arranque de GCS Fuse al fragmentar la carga en múltiples archivos pequeños `.safetensors`.
 *   **Perfil `local-qwen3-llamacpp`:** Usa el archivo `k8s/service-local-llamacpp-qwen3.yaml`. Despliega **llama.cpp** en el clúster MicroK8s de desarrollo local, montando el volumen local NVMe para cargar el modelo MoE en formato GGUF junto con el proyector multimodal (`--mmproj`) de audio y visión.
 
+### Perfiles de la Familia DeepSeek 4.1 (Atención Latente Multicabezal - MLA)
+*   **Perfil `cloud-deepseek-vllm`:** Usa el archivo `k8s/service-cloud-vllm-deepseek.yaml`. Despliega **vLLM** en Cloud Run Knative sobre GPU **NVIDIA L4 (24GB)** cargando el modelo AWQ (`DeepSeek-V4-Distill-14B-AWQ`). Su arquitectura **MLA** reduce en más de un 90% el consumo de KV Cache, permitiendo evaluar rúbricas analíticas C0/C1 y correr el Auditor Visual (`ce-cli.sh audit visual`) con auto-escalado a cero (`minScale: 0`) para coste cero en reposo.
+
 ### Perfiles de la Familia Qwen 2.5 (Heredados)
 *   **Perfil `local-open-llm`:** Usa el archivo `k8s/service-local.yaml`. Despliega el motor llama.cpp apuntando a discos locales NVMe donde residen los pesos GGUF heredados de Qwen 2.5.
 *   **Perfil `cloud-open-llm`:** Usa el archivo `k8s/service-cloud.yaml`. Despliega llama.cpp en Cloud Run, montando los pesos GGUF mediante GCS FUSE.
+
 
 ## 3. Matriz de Autenticación Híbrida
 

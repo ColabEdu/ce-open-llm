@@ -74,5 +74,21 @@ profiles:
     manifests:
       rawYaml: []
     deploy:
-      custom:
-        - command: ../ce-devops/scripts/deploy_runpod_alia.sh
+      kubectl:
+        hooks:
+          after:
+            - host:
+                command: ["../ce-devops/scripts/deploy_runpod_alia.sh"]
+
+  # --- CLOUD PROFILE (vLLM + DeepSeek 4.1 AWQ en L4) ---
+  - name: cloud-deepseek-vllm
+    build:
+      local:
+        push: false
+      artifacts: []
+    manifests:
+      rawYaml: ["k8s/service-cloud-vllm-deepseek.yaml"]
+    deploy:
+      cloudrun:
+        projectid: prevvy1
+        region: us-central1

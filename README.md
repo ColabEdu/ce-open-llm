@@ -29,6 +29,12 @@ The infrastructure leverages distinct inference engines optimized for different 
      * Default legacy target: `qwen2.5-0.5b-instruct` (via profile `local-open-llm`).
    * **Architecture:** Volatile/Local Mount. Weights reside on fast local NVMe storage or Cloud Storage FUSE and are mounted into the container at `/mnt/models`.
 
+4. **Cloud Run vLLM Pipeline (For DeepSeek 4.1 with MLA & Reasoning)**
+   * **Engine:** `vllm/vllm-openai:latest`
+   * **Target Model:** `DeepSeek-V4-Distill-14B-AWQ` (via profile `cloud-deepseek-vllm`).
+   * **Architecture:** Knative Service on Cloud Run with NVIDIA L4 (24GB VRAM) and scale-to-zero (`minScale: 0`). Leverages **Multi-Head Latent Attention (MLA)** to eliminate KV Cache memory bottlenecks by >90%, delivering high-throughput batch grading without OOM errors.
+
+
 ---
 
 ## 🛠️ Staging and Deploying Next Times
@@ -82,3 +88,24 @@ The GGUF workflow for Cloud Run uses **GCS FUSE**. You just upload the new weigh
    ```bash
    ./deploy-salamandra.sh
    ```
+
+### 4. Deploying DeepSeek 4.1 (Cloud Run L4 + Automated Visual Audit & Scale-to-Zero)
+
+DeepSeek 4.1 provides superior analytical reasoning for rubrics C0/C1 while eliminating the KV cache bottleneck via **Multi-Head Latent Attention (MLA)**, running comfortably inside an **NVIDIA L4 (24GB)** GPU.
+
+* **Automated Full Lifecycle Test (Deploy $\to$ Test & Visual Audit $\to$ Scale to Zero):**
+  This script deploys the Cloud Run service, routes `ce-cli.sh` to it, executes `ce-cli.sh test grading --visual` and `ce-cli.sh audit visual` (160 snapshots), and automatically scales instances to 0 to prevent cloud charges:
+  ```bash
+  ./run_deepseek_visual_test.sh
+  ```
+
+* **Manual Cloud Run Deployment:**
+  ```bash
+  skaffold run -p cloud-deepseek-vllm
+  ```
+
+* **Manual Shutdown (Zero Cost):**
+  ```bash
+  gcloud run services update ce-deepseek-inference --project=prevvy1 --region=us-central1 --max-instances=0
+  ```
+

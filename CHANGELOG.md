@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.9.8] - 2026-10-10
+
+### Added
+- **DeepSeek & Salamandra Model Deployment Profiles**:
+  - `k8s/service-cloud-vllm-deepseek.yaml`: Knative Cloud Run profile for DeepSeek LLM evaluation backend.
+  - `k8s/service-cloud-vllm-salamandra.yaml`: Knative Cloud Run profile for BSC Salamandra Spanish language foundation model.
+  - Multipart download and upload orchestration scripts (`download_and_upload_deepseek.sh`, `download_part2_and_upload.sh`, `download_parts.sh`).
+  - Automated visual testing verification scripts (`run_deepseek_visual_test.sh`, `run_salamandra_visual_test.sh`).
+
+### Changed
+- **Skaffold Multi-Profile Matrix**:
+  - Updated `skaffold.yaml` and architecture documentation with unified profiles for DeepSeek and Salamandra inference engines.
+
 ## [0.9.2] - 2026-09-10
 
 ### Added

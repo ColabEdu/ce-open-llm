@@ -1,0 +1,61 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: ce-deepseek-inference
+  annotations:
+    run.googleapis.com/ingress: "internal"
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/execution-environment: "gen2"
+        run.googleapis.com/gpu-type: "nvidia-l4"
+        run.googleapis.com/gpu-count: "1"
+        run.googleapis.com/gpu-zonal-redundancy-disabled: "true"
+        run.googleapis.com/cpu-throttling: "false"
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "1"
+    spec:
+      containerConcurrency: 10
+      timeoutSeconds: 600
+      serviceAccountName: "ce-llm-runner@prevvy1.iam.gserviceaccount.com"
+      containers:
+        - image: vllm/vllm-openai:latest
+          args:
+            - "--model"
+            - "/mnt/models/DeepSeek-V4-Distill-14B-AWQ"
+            - "--quantization"
+            - "awq"
+            - "--max-model-len"
+            - "16384"
+            - "--gpu-memory-utilization"
+            - "0.85"
+            - "--port"
+            - "8080"
+            - "--trust-remote-code"
+            - "--safetensors-load-strategy"
+            - "prefetch"
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 30
+            timeoutSeconds: 5
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+              cpu: "8"
+              memory: "32Gi"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: model-volume
+              mountPath: /mnt/models
+      volumes:
+        - name: model-volume
+          csi:
+            driver: gcsfuse.run.googleapis.com
+            readOnly: true
+            volumeAttributes:
+              bucketName: prevvy1-llm-models
