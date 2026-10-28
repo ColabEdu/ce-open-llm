@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.9.10] - 2026-10-28
+
+### Changed
+- **Ecosystem Alignment**: Upgraded LLM inference deployments and model manifests to align with platform release `0.9.10`.
+
 ## [0.9.8] - 2026-10-10
 
 ### Added
