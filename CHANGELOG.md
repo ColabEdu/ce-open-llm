@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.9.11] - 2026-11-12
+
+### Changed
+- **Ecosystem Alignment**: Alineación de manifiestos y adaptadores locales de inferencia con la release de plataforma **`0.9.11`**.
+
 ## [0.9.10] - 2026-10-28
 
 ### Changed
